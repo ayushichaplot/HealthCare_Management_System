@@ -42,21 +42,19 @@ class PatientTestCase(TestCase):
 class VisitTestCase(TestCase):
     def setUp(self):
         user1 = Patient.objects.create(pfname='Jerry', plname='Jain', paddress='Udaipur', pphone_number='1234000000')
-        user2 = Patient.objects.create(pfname='Tom', plname='Jain', paddress='Mumbai', pphone_number=1234567899)
-
         Visit.objects.create(patient=user1,visit_start_date=datetime.date(2020,3,3), visit_end_date=datetime.date(2020,3,5))
-        Visit.objects.create(patient=user2,visit_start_date=datetime.date(2020,2,3), visit_end_date=datetime.date(2020,2,2))
+
 
     def test_fields_visit(self):
         record = Visit.objects.get(id=1)
         self.assertEqual(record.patient.pfname, 'Jerry')
         visit = Visit.objects.all()
-        self.assertEqual(visit.count(),2)
+        self.assertEqual(visit.count(),1)
 
     def test_validation(self):
-        #date = Visit(visit_start_date=datetime.date(2020,3,3), visit_end_date=datetime.date(2020,3,5))
-        date = Visit.objects.get(id=2)
-        date.save()
+        user2 = Patient.objects.create(pfname='Tom', plname='Jain', paddress='Mumbai', pphone_number=1234567899)
+        date = Visit(patient=user2, visit_start_date=datetime.date(2020,3,3), visit_end_date=datetime.date(2020,3,2))
+
         with self.assertRaises(ValidationError):
             date.full_clean()
 

@@ -29,5 +29,16 @@ urlpatterns = [
         r'^api/v1/patients/$',
         views.get_post_patients,
         name='get_post_patients'
-    )
+    ),
+    url(
+        r'^api/v1/visits/$',
+        views.get_post_visits,
+        name='get_post_visits'
+    ),
+    url(
+        r'^api/v1/visits/(?P<pk>[0-9]+)$',
+        views.get_delete_update_visit,
+        name='get_delete_update_visit'
+    ),
+
 ]
